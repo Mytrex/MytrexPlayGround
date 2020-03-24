@@ -45,9 +45,9 @@ module.exports = {
                 }
                 let form = {
                     "grant_type": "password",
-                    "password": "SaveLives1",
-                    "username": "14703940075",
-                    "extension": "101"
+                    "password": process.env.RINGCENTRAL_PASSWORD,
+                    "username": process.env.RINGCENTRAL_USERNAME,
+                    "extension": process.env.RINGCENTRAL_EXTENSION
                 }
                 return request.post({
                         url: RINGCENTRAL_SERVER_URL + '/restapi/oauth/token',
