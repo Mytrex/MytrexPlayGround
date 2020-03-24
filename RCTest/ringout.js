@@ -1,3 +1,4 @@
+require('dotenv').config();
 const SDK = require('@ringcentral/sdk').SDK
 
 RECIPIENT = '<ENTER PHONE NUMBER>'
