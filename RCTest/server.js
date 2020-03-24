@@ -1,8 +1,23 @@
-var app = require('express')();
-var session = require('express-session');
-var RingCentral = require('@ringcentral/sdk').SDK;
-var path = require('path')
+//NPM packages
+const express = require('express'),
+bodyParser = require('body-parser'),
+session = require('express-session'),
+path = require('path');
 
+
+//Local Requires;
+const authorize = require('./source/authorize.js'), 
+ringout = require('./source/ringout.js');
+
+
+var app = express();
+
+var jsonParser = bodyParser.json({
+  limit: 1024 * 1024 * 20,
+  type: 'application/json'
+});
+
+app.use(jsonParser);
 app.use(session({ secret: 'somesecretstring', tokens: ''}));
 app.set('views', path.join(__dirname, 'views'))
 app.set('view engine', 'ejs')
@@ -12,6 +27,7 @@ const RINGCENTRAL_CLIENT_SECRET= 'cvJ8Z8JuTVOcjcMFFHRXjw-klwtpWYTDKvTX4RPSdBog'
 const RINGCENTRAL_SERVER_URL= 'https://platform.devtest.ringcentral.com'
 const RINGCENTRAL_REDIRECT_URL= 'http://localhost:5000/oauth2callback'
 
+var RingCentral = require('@ringcentral/sdk').SDK;
 var rcsdk = new RingCentral({
   server: RINGCENTRAL_SERVER_URL,
   clientId: RINGCENTRAL_CLIENT_ID,
@@ -19,10 +35,10 @@ var rcsdk = new RingCentral({
   redirectUri: RINGCENTRAL_REDIRECT_URL
 });
 
-var server = require('http').createServer(app);
-server.listen(5000);
-console.log("listen to port 5000")
-
+//client secret: "cGvMFZ0TSYaZB95-DXGLZgt0S_3i98T3aB25OGfBmqqQ"
+//client ID: "NpUS1WMFSx2uyLbzJNAp4A"
+//PhoneNumber: 14703940075
+app.get('/ringout', authorize.authorize, ringout.ringOut);
 app.get('/index', function (req, res) {
   res.redirect("/")
 })
@@ -131,3 +147,9 @@ function callGetEndpoint(platform, endpoint, res){
         res.send("Error")
     })
 }
+
+var server = app.listen(5000, function () {
+  console.log("listening on port 5000")
+});
+
+module.exports = app;
