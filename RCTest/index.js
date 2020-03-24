@@ -1,3 +1,4 @@
+require('dotenv').config();
 var app = require('express')();
 var session = require('express-session');
 var RingCentral = require('@ringcentral/sdk').SDK;
@@ -7,10 +8,10 @@ app.use(session({ secret: 'somesecretstring', tokens: ''}));
 app.set('views', path.join(__dirname, 'views'))
 app.set('view engine', 'ejs')
 
-const RINGCENTRAL_CLIENT_ID= '1Wt9HIagSrm3eVMvzo1niw'
-const RINGCENTRAL_CLIENT_SECRET= 'cvJ8Z8JuTVOcjcMFFHRXjw-klwtpWYTDKvTX4RPSdBog'
-const RINGCENTRAL_SERVER_URL= 'https://platform.devtest.ringcentral.com'
-const RINGCENTRAL_REDIRECT_URL= 'http://localhost:5000/oauth2callback'
+const RINGCENTRAL_CLIENT_ID= process.env.RINGCENTRAL_CLIENT_ID;
+const RINGCENTRAL_CLIENT_SECRET= process.env.RINGCENTRAL_CLIENT_SECRET;
+const RINGCENTRAL_SERVER_URL= process.env.RINGCENTRAL_SERVER_URL;
+const RINGCENTRAL_REDIRECT_URL= process.env.RINGCENTRAL_REDIRECT_URL;
 
 var rcsdk = new RingCentral({
   server: RINGCENTRAL_SERVER_URL,
