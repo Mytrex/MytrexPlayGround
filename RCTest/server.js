@@ -20,7 +20,7 @@ var jsonParser = bodyParser.json({
 
 app.use(jsonParser);
 
-app.post ('/ringOut', authorize.authorize, ringOut.ringOut);
+app.post('/ringOut', authorize.authorize, ringOut.ringOut);
 
 var server = app.listen(5000, function () {
   console.log("listening on port 5000")

@@ -1,5 +1,5 @@
 const request = require('request');
-const urlHost = 'https://platform.devtest.ringcentral.com';
+const urlHost = process.env.RINGCENTRAL_SERVER_URL;
 module.exports = {
     ringOut: function(req, res, next){
         let tryCount = 0;
