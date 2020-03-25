@@ -23,6 +23,7 @@ module.exports = {
         if(access_token && refresh_token && accessExpires && refreshExpires){
             if (accessExpires < moment().subtract(30, 'seconds') && refreshToken > moment().subtract(30, 'seconds')) {
                 //if the accessToken expires but we still have a refresh token that's good
+                console.log('refreshing the token');
                 refreshToken();
             } else if (refreshToken < moment().subtract(30, 'seconds')) {
                 //if our refresh token has expired, we'll get a new one. 
@@ -95,6 +96,7 @@ module.exports = {
                 },
                 function (error, response, body) {
                     if (!error && response && response.statusCode === 200 && body.access_token) {
+                        console.log('Successfully refreshed the token');
                         access_token = body.access_token;
                         refresh_token = body.refresh_token;
                         accessExpires = moment().add(body.expires_in, "seconds");
@@ -103,6 +105,7 @@ module.exports = {
                         req.refresh_token = refresh_token;
                         next();
                     } else {
+                        console.log('Error Refreshing the Token');
                         access_token = '';
                         refresh_token = '';
                         tryCount++
