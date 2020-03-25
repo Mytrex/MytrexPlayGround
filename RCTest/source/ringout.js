@@ -15,7 +15,7 @@ module.exports = {
         let postBody = {
             "from": {"phoneNumber": fromPhone},
             "to": {"phoneNumber": toPhone},
-            "playPrompt": (body.playPrompt)? body.playPrompt : true,
+            "playPrompt": (!body.playPrompt)? body.playPrompt : false,
             "country": { "id" : "1" },
             "callerId": {"phoneNumber": callerId}
         }
@@ -30,19 +30,23 @@ module.exports = {
                 if (!error && response && response.statusCode === 200) {
                     res.status(200).json(body)
                 } else {
-                    if (tryCount < 2){
-                        tryCount ++;
-                        authorize.authorizeCB(req, function (err, res) {
-                            if(err){
-
-                            } else {
-
-                            }
-                        })
-                    }
                     res.status(400).json(body)
                 }
             }
         )
     }
 };
+
+// {
+//     "toPhone": "14353390656",
+//     "fromPhone": "13854987732",
+//     "callerId": "13854987732",
+//     "playPrompt": false
+// }
+
+// {
+//     "toPhone": "13854987732",
+//     "fromPhone": "14353390656",
+//     "callerId": "14353390656",
+//     "playPrompt": false
+// }
